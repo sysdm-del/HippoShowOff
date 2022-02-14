@@ -21,6 +21,10 @@ public interface Registry<T> {
         return Optional.ofNullable(this.getRegistry().get(key));
     }
 
+   default void unregister(@NotNull final String key) {
+        this.getRegistry().remove(key);
+   }
+
     default void iterate(@NotNull final BiConsumer<String, T> consumer) {
 
         for (final Map.Entry<String, T> entry : this.getRegistry().entrySet()) {

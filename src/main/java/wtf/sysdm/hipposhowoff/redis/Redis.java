@@ -44,6 +44,7 @@ public final class Redis {
                 final Packet packet = Packet.fromJSON(message);
 
                 receive(packet);
+
             }
         };
 

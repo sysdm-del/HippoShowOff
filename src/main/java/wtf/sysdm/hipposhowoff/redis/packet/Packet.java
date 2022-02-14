@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.sysdm.hipposhowoff.redis.data.DataSet;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -16,14 +17,14 @@ import java.util.UUID;
 @AllArgsConstructor
 public final class Packet {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new Gson();
     private final PacketType type;
 
     private final UUID sender;
     private final UUID recipient;
 
     private final String head;
-    private final DataSet[] body;
+    private final DataSet<?>[] body;
 
     @NotNull
     public static Packet fromJSON(@NotNull final String json) {
@@ -36,13 +37,14 @@ public final class Packet {
     }
 
     @Nullable
-    public String getData(@NotNull final String key) {
+    public DataSet<?> getData(@NotNull final String key) {
 
-        for (@NotNull final DataSet data : this.body) {
+        for (@NotNull final DataSet<?> data : this.body) {
             if (!data.getKey().equals(key)) {
                 continue;
             }
-            return data.getValue();
+
+            return data;
         }
 
         return null;
